@@ -16,10 +16,12 @@ prog_dir = join(download_dir, "Programs")
 comp_dir = join(download_dir, "Compressed")
 torr_dir = join(download_dir, "Torrents")
 
+
 # checking if directory exists, if not creating it
 def check_and_create(folder):
     if not exists(folder):
         makedirs(folder)
+
 
 check_and_create(videos_dir)
 check_and_create(music_dir)
@@ -30,18 +32,93 @@ check_and_create(comp_dir)
 check_and_create(torr_dir)
 
 #  supported image types
-image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".gif", ".webp", ".tiff", ".tif", ".psd",
-                    ".raw", ".arw", ".cr2", ".nrw", ".k25", ".bmp", ".dib", ".heif", ".heic", ".ind", ".indd", ".indt",
-                    ".jp2", ".j2k", ".jpf", ".jpf", ".jpx", ".jpm", ".mj2", ".svg", ".svgz", ".ai", ".eps", ".ico"]
+image_extensions = [
+    ".jpg",
+    ".jpeg",
+    ".jpe",
+    ".jif",
+    ".jfif",
+    ".jfi",
+    ".png",
+    ".gif",
+    ".webp",
+    ".tiff",
+    ".tif",
+    ".psd",
+    ".raw",
+    ".arw",
+    ".cr2",
+    ".nrw",
+    ".k25",
+    ".bmp",
+    ".dib",
+    ".heif",
+    ".heic",
+    ".ind",
+    ".indd",
+    ".indt",
+    ".jp2",
+    ".j2k",
+    ".jpf",
+    ".jpf",
+    ".jpx",
+    ".jpm",
+    ".mj2",
+    ".svg",
+    ".svgz",
+    ".ai",
+    ".eps",
+    ".ico",
+    ".iso",
+]
 #  supported Video types
-video_extensions = [".webm", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".ogg", ".mkv",
-                    ".mp4", ".mp4v", ".m4v", ".avi", ".wmv", ".mov", ".qt", ".flv", ".swf", ".avchd"]
+video_extensions = [
+    ".webm",
+    ".mpg",
+    ".mp2",
+    ".mpeg",
+    ".mpe",
+    ".mpv",
+    ".ogg",
+    ".mkv",
+    ".mp4",
+    ".mp4v",
+    ".m4v",
+    ".avi",
+    ".wmv",
+    ".mov",
+    ".qt",
+    ".flv",
+    ".swf",
+    ".avchd",
+]
 #  supported Audio types
 audio_extensions = [".m4a", ".flac", "mp3", ".wav", ".wma", ".aac"]
 #  supported Document types
-document_extensions = [".doc", ".docx", ".odt", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"]
-
-compressed_extensions = [".7z", ".arj", ".deb", ".pkg", ".rar", ".rpm", ".tar.gz", ".z", ".zip"]
+document_extensions = [
+    ".doc",
+    ".docx",
+    ".odt",
+    ".pdf",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+]
+# supported Extension types
+compressed_extensions = [
+    ".7z",
+    ".arj",
+    ".deb",
+    ".pkg",
+    ".rar",
+    ".rpm",
+    ".tar.gz",
+    ".z",
+    ".zip",
+]
+# supported Executable or program types
+program_extensions = [".exe", ".msi", ".dmg"]
 
 
 def make_unique(destination, name):
@@ -62,6 +139,7 @@ def move_file(destination, entry, name):
         rename(oldName, newName)
     move(entry, destination)
 
+
 class MoveHandler(FileSystemEventHandler):
     def on_modified(self, event):
         directories = scandir(download_dir)
@@ -69,31 +147,44 @@ class MoveHandler(FileSystemEventHandler):
             name = directory.name
             destination = download_dir
             for image_extension in image_extensions:
-                if name.endswith(image_extension) or name.endswith(image_extension.upper()):
+                if name.endswith(image_extension) or name.endswith(
+                    image_extension.upper()
+                ):
                     destination = images_dir
                     move_file(destination, directory, name)
 
             for video_extension in video_extensions:
-                if name.endswith(video_extension) or name.endswith(video_extension.upper()):
+                if name.endswith(video_extension) or name.endswith(
+                    video_extension.upper()
+                ):
                     destination = videos_dir
                     move_file(destination, directory, name)
 
             for audio_extension in audio_extensions:
-                if name.endswith(audio_extension) or name.endswith(audio_extension.upper()):
+                if name.endswith(audio_extension) or name.endswith(
+                    audio_extension.upper()
+                ):
                     destination = music_dir
                     move_file(destination, directory, name)
 
             for document_extension in document_extensions:
-                if name.endswith(document_extension) or name.endswith(document_extension.upper()):
+                if name.endswith(document_extension) or name.endswith(
+                    document_extension.upper()
+                ):
                     destination = doc_dir
                     move_file(destination, directory, name)
 
-            if name.endswith(".exe") or name.endswith(".EXE"):
-                destination = prog_dir
-                move_file(destination, directory, name)
+            for program_extension in program_extensions:
+                if name.endswith(program_extension) or name.endswith(
+                    program_extension.upper()
+                ):
+                    destination = prog_dir
+                    move_file(destination, directory, name)
 
             for compressed_extension in compressed_extensions:
-                if name.endswith(compressed_extension) or name.endswith(compressed_extension.upper()):
+                if name.endswith(compressed_extension) or name.endswith(
+                    compressed_extension.upper()
+                ):
                     destination = comp_dir
                     move_file(destination, directory, name)
 
@@ -104,9 +195,11 @@ class MoveHandler(FileSystemEventHandler):
 
 if __name__ == "__main__":
     # Set the format for logging info
-    logging.basicConfig(level=logging.INFO,
-                        format='%(asctime)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
     # Set format for displaying path
     path = download_dir
