@@ -1,4 +1,4 @@
-from os.path import splitext, exists, join
+from os.path import splitext, exists, join, expanduser
 from os import scandir, rename, makedirs
 from shutil import move
 import time
@@ -6,7 +6,7 @@ import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-home_directory = os.path.expanduser("~")
+home_directory = expanduser("~")
 download_dir = join(home_directory, "Downloads")
 videos_dir = join(download_dir, "Videos")
 music_dir = join(download_dir, "Music")
@@ -124,7 +124,7 @@ program_extensions = [".exe", ".msi", ".dmg"]
 def make_unique(destination, name):
     filename, extension = splitext(name)
     counter = 1
-    while exists(f"{destination}/{name}"):
+    while exists(join(destination,name)):
         name = f"{filename}({str(counter)}){extension}"
         counter += 1
 
@@ -132,7 +132,7 @@ def make_unique(destination, name):
 
 
 def move_file(destination, entry, name):
-    if exists(f"{destination}/{name}"):
+    if exists(join(destination,name)):
         unique_name = make_unique(destination, name)
         oldName = join(destination, name)
         newName = join(destination, unique_name)
