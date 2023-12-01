@@ -1,19 +1,33 @@
 from os.path import splitext, exists, join
-from os import scandir, rename
+from os import scandir, rename, makedirs
 from shutil import move
 import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-download_dir = "c:\\Users\\mukil\\Downloads"
-videos_dir = download_dir + "\\Videos"
-music_dir = download_dir + "\\Music"
-images_dir = download_dir + "\\Images"
-doc_dir = download_dir + "\\Documents"
-prog_dir = download_dir + "\\Programs"
-comp_dir = download_dir + "\\Compressed"
-torr_dir = download_dir + "\\Torrents"
+home_directory = os.path.expanduser("~")
+download_dir = join(home_directory, "Downloads")
+videos_dir = join(download_dir, "Videos")
+music_dir = join(download_dir, "Music")
+images_dir = join(download_dir, "Images")
+doc_dir = join(download_dir, "Documents")
+prog_dir = join(download_dir, "Programs")
+comp_dir = join(download_dir, "Compressed")
+torr_dir = join(download_dir, "Torrents")
+
+# checking if directory exists, if not creating it
+def check_and_create(folder):
+    if not exists(folder):
+        makedirs(folder)
+
+check_and_create(videos_dir)
+check_and_create(music_dir)
+check_and_create(images_dir)
+check_and_create(doc_dir)
+check_and_create(prog_dir)
+check_and_create(comp_dir)
+check_and_create(torr_dir)
 
 #  supported image types
 image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".gif", ".webp", ".tiff", ".tif", ".psd",
